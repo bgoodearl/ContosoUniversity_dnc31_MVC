@@ -10,6 +10,8 @@
 		<td>
             Restarted from scratch - Models, Common and DAL projects<br/>
             Added initial persistent Models<br/>
+            Initial EF Migration - 
+            see _MigrationNotes in ContosoUniversity.DAL<br/>
 		</td>
     </tr>
     <tr>
