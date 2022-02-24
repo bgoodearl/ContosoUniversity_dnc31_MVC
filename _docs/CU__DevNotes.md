@@ -12,6 +12,7 @@
             Added initial persistent Models<br/>
             Initial EF Migration - 
             see _MigrationNotes in ContosoUniversity.DAL<br/>
+            Tweaked Schema1.sql to make __MigrationHistory optional<br/>
 		</td>
     </tr>
     <tr>
