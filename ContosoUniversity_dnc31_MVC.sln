@@ -32,6 +32,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoUniversity.DAL", "Co
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoUniversity", "ContosoUniversity\ContosoUniversity.csproj", "{C7EC1414-F598-4014-9179-7BAC48EF26C0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F405C53A-437F-4A61-8DF2-BD43F7C72EA0} = {F405C53A-437F-4A61-8DF2-BD43F7C72EA0}
+		{E0D453E4-01C0-4FDE-8FDE-6CFFF7E56542} = {E0D453E4-01C0-4FDE-8FDE-6CFFF7E56542}
+		{7A9F97FE-1A2F-4E63-95BF-F10A93A0DB45} = {7A9F97FE-1A2F-4E63-95BF-F10A93A0DB45}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
