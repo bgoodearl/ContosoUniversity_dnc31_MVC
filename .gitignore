@@ -26,6 +26,7 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+_[Bb]inaries/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -338,3 +339,6 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+# Do not commit files/folders starting with _Local
+_[Ll]ocal*
