@@ -13,6 +13,7 @@
             Initial EF Migration - 
             see _MigrationNotes in ContosoUniversity.DAL<br/>
             Tweaked Schema1.sql to make __MigrationHistory optional<br/>
+            Added ASP.NET Core 3.1 MVC web app - ContosoUniversity<br/>
 		</td>
     </tr>
     <tr>
