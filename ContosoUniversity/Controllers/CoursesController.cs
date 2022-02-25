@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ContosoUniversity.Common.Interfaces;
 using ContosoUniversity.DAL.Interfaces;
 using ContosoUniversity.Models;
+using ContosoUniversity.Shared.Interfaces;
 using ContosoUniversity.Shared.ViewModels.Courses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,20 @@ namespace ContosoUniversity.Controllers
                 List<CourseListItem> courses = await repo.GetCourseListItemsNoTrackingAsync();
                 return View(courses);
             }
+        }
+
+        // GET: Courses/Details/5
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> Details(int id)
+        {
+            ISchoolViewDataRepository svRepo = GetSchoolViewDataRepository();
+            CourseItem courseItem = await svRepo.GetCourseDetailsNoTrackingAsync(id);
+            if (courseItem == null)
+            {
+                return NotFound();
+            }
+            return View(courseItem);
         }
 
         public async Task<IActionResult> SeedData()

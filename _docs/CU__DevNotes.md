@@ -6,6 +6,13 @@
 		<th>Notes</th>
     </tr>
     <tr>
+        <td>2/25/2022</td><td>bg</td>
+		<td>
+            Added SchoolViewDataRepository, Course Details<br/>
+            Using Ardalis.GuardClauses<br/>
+		</td>
+    </tr>
+    <tr>
         <td>2/24/2022</td><td>bg</td>
 		<td>
             Restarted from scratch - Models, Common and DAL projects<br/>

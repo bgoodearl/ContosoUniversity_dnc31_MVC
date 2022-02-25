@@ -1,5 +1,6 @@
 ﻿using ContosoUniversity.Common.Interfaces;
 using ContosoUniversity.Models;
+using ContosoUniversity.Shared.ViewModels;
 using ContosoUniversity.Shared.ViewModels.Courses;
 using ContosoUniversity.Shared.ViewModels.Departments;
 using ContosoUniversity.Shared.ViewModels.Instructors;
@@ -19,6 +20,44 @@ namespace ContosoUniversity.DAL.Repositories
         public SchoolRepository(SchoolDbContext schoolContext)
         {
             SchoolDbContext = schoolContext ?? throw new ArgumentNullException(nameof(schoolContext));
+        }
+
+        public async Task<List<IdItem>> GetCourseInstructorsNoTrackingAsync(int courseID)
+        {
+            Course course = await SchoolDbContext.Courses
+                .Include(c => c.Instructors)
+                .AsNoTracking()
+                .Where(c => c.CourseID == courseID)
+                .SingleOrDefaultAsync();
+            if (course != null)
+            {
+                List<IdItem> instructorList = course.Instructors
+                    .OrderBy(i => i.FullName)
+                    .Select(i => new IdItem
+                    {
+                        Id = i.ID,
+                        Name = i.FullName
+                    })
+                    .ToList();
+                return instructorList;
+            }
+            return new List<IdItem>();
+        }
+
+        public async Task<CourseListItem> GetCourseListItemNoTrackingAsync(int courseID)
+        {
+            CourseListItem course = await SchoolDbContext.Courses
+                .AsNoTracking()
+                .Where(c => c.CourseID == courseID)
+                .Select(c => new CourseListItem
+                {
+                    CourseID = c.CourseID,
+                    Credits = c.Credits,
+                    Department = c.Department.Name,
+                    Title = c.Title
+                })
+                .SingleOrDefaultAsync();
+            return course;
         }
 
         public async Task<List<CourseListItem>> GetCourseListItemsNoTrackingAsync()

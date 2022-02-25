@@ -6,9 +6,13 @@ Adapted from Microsoft sample code - see [CU_Resources](./_docs/CU_Resources.md)
 
 Blazor demos added after the Contoso University app was working
 
-[Dev Notes](./_docs/CU_DevNotes.md)
+This app was intentionally built with a layered architecture.
 
-[Blazor Resources](./_docs/CU_BlazorResources.md)
+[Dev Notes](./_docs/CU__DevNotes.md)
+
+[EF Resources](./_docs/CU_EFResources.md)<br/>
+[Other Resources](./_docs/CU_Resources.md)<br/>
+[Tools](./_docs/CU_Tools.md)<br/>
 
 **Important Notes**<br/>
 The projects in the solutions provided use Assembly references rather than Project references.
@@ -36,4 +40,4 @@ ContosoUniversity.Models     | Persistent Data Object Models
 ContosoUniversity.Shared     | Shared definitions and View Models
 ContosoUniversity.Common     | Interface definitions
 ContosoUniversity.DAL        | Data Access Layer
-ContosoUniversity            | ContosoUniversity Web Application
+ContosoUniversity            | Contoso University Web Application

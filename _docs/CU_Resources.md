@@ -12,3 +12,9 @@
 (c. Aug 2021)
 
 [Contoso University - .NET Core 2.2 final on GitHub](https://github.com/dotnet/AspNetCore.Docs/tree/main/aspnetcore/data/ef-mvc/intro/samples/cu-final)
+
+### Steve Smith (ardalis) - Guard Clauses
+
+[Ardalis.GuardClauses - NuGet](https://www.nuget.org/packages/Ardalis.GuardClauses/)<br/>
+[Ardalis.GuardClauses - GitHub](https://github.com/ardalis/guardclauses)
+(First release c. Jul 2019 - current in 2022)<br/>

@@ -1,0 +1,53 @@
+﻿@using ContosoUniversity.Shared.ViewModels.Courses
+@model CourseItem
+
+@{
+    ViewData["Title"] = "Course Details";
+}
+
+<h1 class="h2">Details</h1>
+
+<div>
+    <h4>Course</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CourseID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CourseID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Credits)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Credits)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Department)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Department)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Instructors)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var i in Model.Instructors)
+            {
+                @i.Name<br />
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    @*<a asp-action="Edit" asp-route-id="@Model.CourseID">Edit</a> |*@
+    @*<a asp-action="Index" asp-route-mode="-1">Back to List</a>*@
+    <a asp-action="Index">Back to List</a>
+</div>

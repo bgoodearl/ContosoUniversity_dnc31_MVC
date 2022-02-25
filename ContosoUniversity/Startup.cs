@@ -2,6 +2,7 @@ using System;
 //using System.Threading.Tasks;
 using ContosoUniversity.Common.Interfaces;
 using ContosoUniversity.DAL.Interfaces;
+using ContosoUniversity.Shared.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -41,6 +42,7 @@ namespace ContosoUniversity
             else
             {
                 services.AddSingleton<ISchoolRepositoryFactory>(xp => new CUD.Repositories.SchoolRepositoryFactory(connStr));
+                services.AddSingleton<ISchoolViewDataRepositoryFactory, CUD.Repositories.SchoolViewDataRepositoryFactory>();
                 services.AddSingleton<ISchoolDbContextFactory>(sp => new CUD.SchoolDbContextFactory(connStr));
             }
 

@@ -1,4 +1,5 @@
 ﻿using ContosoUniversity.Models;
+using ContosoUniversity.Shared.ViewModels;
 using ContosoUniversity.Shared.ViewModels.Courses;
 using ContosoUniversity.Shared.ViewModels.Departments;
 using ContosoUniversity.Shared.ViewModels.Instructors;
@@ -12,6 +13,8 @@ namespace ContosoUniversity.Common.Interfaces
 {
     public interface ISchoolRepository : IDisposable
     {
+        Task<List<IdItem>> GetCourseInstructorsNoTrackingAsync(int courseID);
+        Task<CourseListItem> GetCourseListItemNoTrackingAsync(int courseID);
         Task<List<CourseListItem>> GetCourseListItemsNoTrackingAsync();
         IQueryable<Course> GetCoursesQueryable();
         Task<List<DepartmentListItem>> GetDepartmentListItemsNoTrackingAsync();
