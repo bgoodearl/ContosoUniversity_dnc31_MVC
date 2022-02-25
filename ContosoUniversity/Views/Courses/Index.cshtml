@@ -1,0 +1,8 @@
+﻿@using ContosoUniversity.Shared.ViewModels.Courses
+@model List<CourseListItem>
+@{
+    ViewData["Title"] = "Courses";
+}
+<h2>Courses - MVC</h2>
+
+@await Html.PartialAsync("Partial/CourseListPartial", Model)

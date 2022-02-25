@@ -1,13 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
+using ContosoUniversity.Common.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
+//using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using CUD = ContosoUniversity.DAL;
 
 namespace ContosoUniversity
 {
@@ -24,6 +25,23 @@ namespace ContosoUniversity
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            //Inject HttpContextAccessor
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            //Inject Entity Framework Repository Factory
+            string connStr = Configuration["ConnectionStrings:SchoolDbContext"];
+
+            if (string.IsNullOrWhiteSpace(connStr))
+            {
+                //Logger.LogError("Connection string not configured");
+                throw new Exception("Connection String not configured");
+            }
+            else
+            {
+                services.AddSingleton<ISchoolRepositoryFactory>(xp => new CUD.Repositories.SchoolRepositoryFactory(connStr));
+            }
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

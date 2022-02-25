@@ -5,6 +5,10 @@
 indent_style = space
 indent_size = 4
 
+# csproj files
+[*.csproj]
+indent_size = 2
+
 # Xml files
 [*.xml]
 indent_size = 2

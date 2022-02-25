@@ -16,11 +16,27 @@ namespace ContosoUniversity
             CreateHostBuilder(args).Build().Run();
         }
 
+        #region WebHost
+
+        public static string GetUserJsonFilename()
+        {
+            return $"appsettings.development_user_{Environment.UserName.ToLower()}.json";
+        }
+
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+#if DEBUG
+                    config.AddJsonFile(GetUserJsonFilename(), true);
+#endif
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+#endregion WebHost
+
     }
 }
