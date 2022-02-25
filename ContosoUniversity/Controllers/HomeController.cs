@@ -5,6 +5,7 @@ using ContosoUniversity.Models;
 
 namespace ContosoUniversity.Controllers
 {
+    [Route("[Controller]/[Action]")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -14,6 +15,7 @@ namespace ContosoUniversity.Controllers
             _logger = logger;
         }
 
+        [Route("~/")]
         public IActionResult Index()
         {
             return View();

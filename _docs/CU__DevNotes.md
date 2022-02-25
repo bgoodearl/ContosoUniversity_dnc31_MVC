@@ -17,6 +17,8 @@
             Added new project ContosoUniversity.Shared for shared interfaces, ViewModels, etc.<br/>
             Added SchoolRepository<br/>
             Added CoursesController with Index page<br/>
+            Completed switch to attribute routing<br/>
+            Added Departments controller with Index page<br/>
 		</td>
     </tr>
     <tr>
