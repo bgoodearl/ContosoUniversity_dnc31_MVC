@@ -19,6 +19,9 @@
             Added CoursesController with Index page<br/>
             Completed switch to attribute routing<br/>
             Added Departments controller with Index page<br/>
+            Added Instructors and Students controllers w/Index pages<br/>
+            Added ISchoolDbContext and data seeding<br/>
+            Started work on paging students<br/>
 		</td>
     </tr>
     <tr>

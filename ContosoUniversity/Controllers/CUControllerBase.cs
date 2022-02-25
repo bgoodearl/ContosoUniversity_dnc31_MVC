@@ -1,5 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using ContosoUniversity.Common.Interfaces;
+using ContosoUniversity.DAL.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,7 @@ namespace ContosoUniversity.Controllers
             HttpContextAccessor = httpContextAccessor;
             Guard.Against.Null(httpContextAccessor.HttpContext, nameof(httpContextAccessor.HttpContext));
             Guard.Against.Null(httpContextAccessor.HttpContext.RequestServices, nameof(httpContextAccessor.HttpContext.RequestServices));
+            SchoolDbContextFactory = httpContextAccessor.HttpContext.RequestServices.GetRequiredService<ISchoolDbContextFactory>();
             SchoolRepositoryFactory = httpContextAccessor.HttpContext.RequestServices.GetRequiredService<ISchoolRepositoryFactory>();
         }
 
@@ -24,7 +26,13 @@ namespace ContosoUniversity.Controllers
         #endregion Read Only variables
 
 
-        #region Repository
+        #region Repository/Database
+
+        ISchoolDbContextFactory SchoolDbContextFactory { get; }
+        protected ISchoolDbContext GetSchoolDbContext()
+        {
+            return SchoolDbContextFactory.GetSchoolDbContext();
+        }
 
         protected ISchoolRepositoryFactory SchoolRepositoryFactory { get; }
         protected ISchoolRepository GetSchoolRepository()
@@ -32,7 +40,7 @@ namespace ContosoUniversity.Controllers
             return SchoolRepositoryFactory.GetSchoolRepository();
         }
 
-        #endregion Repository
+        #endregion Repository/Database
 
     }
 }

@@ -2,6 +2,8 @@
 using ContosoUniversity.Models;
 using ContosoUniversity.Shared.ViewModels.Courses;
 using ContosoUniversity.Shared.ViewModels.Departments;
+using ContosoUniversity.Shared.ViewModels.Instructors;
+using ContosoUniversity.Shared.ViewModels.Students;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -63,6 +65,42 @@ namespace ContosoUniversity.DAL.Repositories
         public IQueryable<Department> GetDepartmentsQueryable()
         {
             return SchoolDbContext.Departments;
+        }
+
+        public async Task<List<InstructorListItem>> GetInstructorListItemsNoTrackingAsync()
+        {
+            List<InstructorListItem> instructors = await SchoolDbContext.Instructors
+                .Include(i => i.OfficeAssignment)
+                .OrderBy(i => i.LastName)
+                .ThenBy(i => i.FirstMidName)
+                .Select(i => new InstructorListItem
+                {
+                    ID = i.ID,
+                    FirstMidName = i.FirstMidName,
+                    HireDate = i.HireDate,
+                    LastName = i.LastName,
+                    OfficeAssignment = i.OfficeAssignment != null ? i.OfficeAssignment.Location : null,
+                })
+                .ToListAsync();
+
+            return instructors;
+        }
+
+        public async Task<List<StudentListItem>> GetStudentListItemsNoTrackingAsync()
+        {
+            List<StudentListItem> students = await SchoolDbContext.Students
+                .OrderBy(s => s.LastName)
+                .ThenBy(s => s.FirstMidName)
+                .Select(s => new StudentListItem
+                {
+                    ID = s.ID,
+                    EnrollmentDate = s.EnrollmentDate,
+                    FirstMidName = s.FirstMidName,
+                    LastName = s.LastName
+                })
+                .ToListAsync();
+
+            return students;
         }
 
         public async Task<int> SaveChangesAsync()

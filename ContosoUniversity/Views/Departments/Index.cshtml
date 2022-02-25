@@ -1,6 +1,8 @@
 ﻿@using ContosoUniversity.Shared.ViewModels.Departments
 @model IEnumerable<DepartmentListItem>
-
+@{
+    ViewData["Title"] = "Departments";
+}
 <h1 class="h2">Departments</h1>
 
 <table class="table">
@@ -24,25 +26,25 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Budget)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Administrator)
-            </td>
-            <td>
-                @*<a asp-action="Edit" asp-route-id="@item.DepartmentID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.DepartmentID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.DepartmentID">Delete</a>*@
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Budget)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Administrator)
+                </td>
+                <td>
+                    @*<a asp-action="Edit" asp-route-id="@item.DepartmentID">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.DepartmentID">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.DepartmentID">Delete</a>*@
+                </td>
+            </tr>
         }
     </tbody>
 </table>
