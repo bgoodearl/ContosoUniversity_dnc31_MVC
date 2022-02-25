@@ -13,6 +13,7 @@ namespace ContosoUniversity.Common.Interfaces
 {
     public interface ISchoolRepository : IDisposable
     {
+        Task<int> AddNewCourseAsync(CourseEditDto course);
         Task<List<IdItem>> GetCourseInstructorsNoTrackingAsync(int courseID);
         Task<CourseListItem> GetCourseListItemNoTrackingAsync(int courseID);
         Task<List<CourseListItem>> GetCourseListItemsNoTrackingAsync();

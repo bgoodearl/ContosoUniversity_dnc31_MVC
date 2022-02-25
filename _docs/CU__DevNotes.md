@@ -10,6 +10,7 @@
 		<td>
             Added SchoolViewDataRepository, Course Details<br/>
             Using Ardalis.GuardClauses<br/>
+            Added Create Course<br/>
 		</td>
     </tr>
     <tr>
