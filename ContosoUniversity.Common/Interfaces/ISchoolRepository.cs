@@ -14,6 +14,7 @@ namespace ContosoUniversity.Common.Interfaces
     public interface ISchoolRepository : IDisposable
     {
         Task<int> AddNewCourseAsync(CourseEditDto course);
+        Task<CourseEditDto> GetCourseEditDtoNoTrackingAsync(int courseID);
         Task<List<IdItem>> GetCourseInstructorsNoTrackingAsync(int courseID);
         Task<CourseListItem> GetCourseListItemNoTrackingAsync(int courseID);
         Task<List<CourseListItem>> GetCourseListItemsNoTrackingAsync();
@@ -22,6 +23,7 @@ namespace ContosoUniversity.Common.Interfaces
         IQueryable<Department> GetDepartmentsQueryable();
         Task<List<InstructorListItem>> GetInstructorListItemsNoTrackingAsync();
         Task<List<StudentListItem>> GetStudentListItemsNoTrackingAsync();
+        Task<CourseActionResult> SaveCourseChangesAsync(CourseEditDto course);
         Task<int> SaveChangesAsync();
     }
 }

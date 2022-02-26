@@ -53,7 +53,8 @@ namespace ContosoUniversity.Controllers
         {
             CourseEditViewModel model = new CourseEditViewModel
             {
-                Course = new CourseEditDto()
+                Course = new CourseEditDto(),
+                NewCourse = true
             };
             using (ISchoolRepository repo = GetSchoolRepository())
             {
@@ -110,6 +111,92 @@ namespace ContosoUniversity.Controllers
                 catch (Exception ex)
                 {
                     //TODO: Logger.LogError(ex, "Courses-Create[3] {0}: {1}", ex.GetType().Name, ex.Message);
+                    ModelState.AddModelError("", "Unable to save changes[3]. Try again, and if the problem persists, see your system administrator.");
+                }
+                CourseEditViewModel model = new CourseEditViewModel
+                {
+                    Course = course,
+                    NewCourse = true
+                };
+                await PopulateDepartmentsDropDownList(repo, model);
+                return View(model);
+            }
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> Edit(int id)
+        {
+            using (ISchoolRepository repo = GetSchoolRepository())
+            {
+                CourseEditViewModel model = new CourseEditViewModel
+                {
+                    Course = await repo.GetCourseEditDtoNoTrackingAsync(id)
+                };
+                if (model.Course == null)
+                {
+                    return NotFound();
+                }
+                await PopulateDepartmentsDropDownList(repo, model);
+                return View(model);
+            }
+        }
+
+        [HttpPost]
+        [Route("{id}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("CourseID,Credits,DepartmentID,Title")] CourseEditDto course)
+        {
+            if ((id == 0) || (course == null) || (course.CourseID != id))
+            {
+                //TODO: Log this
+                return BadRequest();
+            }
+
+            using (ISchoolRepository repo = GetSchoolRepository())
+            {
+                try
+                {
+                    if (ModelState.IsValid)
+                    {
+                        if (string.IsNullOrWhiteSpace(course.Title))
+                        {
+                            ModelState.AddModelError("Course.Title", "Title is required");
+                        }
+                        else
+                        {
+                            CourseActionResult actionResult = await repo.SaveCourseChangesAsync(course);
+                            if (!string.IsNullOrWhiteSpace(actionResult.ErrorMessage))
+                            {
+                                //TODO: Log This
+                                ModelState.AddModelError("", "Unable to save changes[1]. Try again, and if the problem persists, see your system administrator.");
+                            }
+                            else
+                            {
+                                return RedirectToAction(nameof(Index));
+                            }
+                        }
+                    }
+                }
+                catch (DbUpdateException ex)
+                {
+                    Exception ex2Log = ex;
+                    string message = ex.Message;
+                    if (ex.InnerException != null)
+                    {
+                        ex2Log = ex.InnerException;
+                    }
+                    //TODO: Logger.LogError(ex, "Courses-Edit[1] {0}: {1}", ex2Log.GetType().Name, ex2Log.Message);
+                    ModelState.AddModelError("", "Unable to save changes[1]. Try again, and if the problem persists, see your system administrator.");
+                }
+                catch (RetryLimitExceededException ex)
+                {
+                    //TODO: Logger.LogError(ex, "Courses-Edit[2] {0}: {1}", ex.GetType().Name, ex.Message);
+                    ModelState.AddModelError("", "Unable to save changes[2]. Try again, and if the problem persists, see your system administrator.");
+                }
+                catch (Exception ex)
+                {
+                    //TODO: Logger.LogError(ex, "Courses-Edit[3] {0}: {1}", ex.GetType().Name, ex.Message);
                     ModelState.AddModelError("", "Unable to save changes[3]. Try again, and if the problem persists, see your system administrator.");
                 }
                 CourseEditViewModel model = new CourseEditViewModel

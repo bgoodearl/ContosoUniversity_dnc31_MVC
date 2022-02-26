@@ -11,6 +11,7 @@
             Added SchoolViewDataRepository, Course Details<br/>
             Using Ardalis.GuardClauses<br/>
             Added Create Course<br/>
+            Added Course Edit<br/>
 		</td>
     </tr>
     <tr>

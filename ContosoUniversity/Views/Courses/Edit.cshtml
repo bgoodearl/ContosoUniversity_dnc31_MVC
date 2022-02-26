@@ -5,15 +5,15 @@
     ViewData["Title"] = "Create Course";
 }
 
-<h1 class="h2">Create Course</h1>
+<h1 class="h2">Edit Course</h1>
 
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             @{await Html.RenderPartialAsync("Partial/CourseEditPartial", Model);}
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>

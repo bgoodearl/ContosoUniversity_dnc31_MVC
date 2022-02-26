@@ -1,4 +1,5 @@
-﻿using ContosoUniversity.Common.Interfaces;
+﻿using Ardalis.GuardClauses;
+using ContosoUniversity.Common.Interfaces;
 using ContosoUniversity.Models;
 using ContosoUniversity.Shared.ViewModels;
 using ContosoUniversity.Shared.ViewModels.Courses;
@@ -34,6 +35,23 @@ namespace ContosoUniversity.DAL.Repositories
             SchoolDbContext.Courses.Add(persistentCourse);
             await SaveChangesAsync();
             return persistentCourse.CourseID;
+        }
+
+        public async Task<CourseEditDto> GetCourseEditDtoNoTrackingAsync(int courseID)
+        {
+            CourseEditDto course = await SchoolDbContext.Courses
+                .AsNoTracking()
+                .Where(c => c.CourseID == courseID)
+                .Select(c => new CourseEditDto
+                {
+                    CourseID = c.CourseID,
+                    Credits = c.Credits,
+                    DepartmentID = c.DepartmentID,
+                    Title = c.Title
+                })
+                .SingleOrDefaultAsync();
+
+            return course;
         }
 
         public async Task<List<IdItem>> GetCourseInstructorsNoTrackingAsync(int courseID)
@@ -154,6 +172,34 @@ namespace ContosoUniversity.DAL.Repositories
                 .ToListAsync();
 
             return students;
+        }
+
+        public async Task<CourseActionResult> SaveCourseChangesAsync(CourseEditDto course)
+        {
+            Guard.Against.Null(course, nameof(course));
+            Guard.Against.Zero(course.CourseID, nameof(course.CourseID));
+
+            CourseActionResult result = new CourseActionResult
+            {
+                Action = "SaveCourseChangesAsync",
+                CourseID = course.CourseID
+            };
+
+            Course dbCourse = await SchoolDbContext.Courses
+                .Where(c => c.CourseID == course.CourseID)
+                .SingleOrDefaultAsync();
+            if (dbCourse == null)
+            {
+                result.ErrorMessage = "Course not found";
+            }
+            else
+            {
+                dbCourse.Credits = course.Credits;
+                dbCourse.DepartmentID = course.DepartmentID;
+                dbCourse.Title = course.Title;
+                result.ChangeCount = await SaveChangesAsync();
+            }
+            return result;
         }
 
         public async Task<int> SaveChangesAsync()
