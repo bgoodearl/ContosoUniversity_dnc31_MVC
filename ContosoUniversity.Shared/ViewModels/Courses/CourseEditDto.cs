@@ -14,5 +14,7 @@ namespace ContosoUniversity.Shared.ViewModels.Courses
         public int Credits { get; set; }
 
         public int DepartmentID { get; set; } = 0;
+
+        public string DepartmentIDstr { get; set; }
     }
 }

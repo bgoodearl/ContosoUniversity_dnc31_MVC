@@ -23,8 +23,16 @@ namespace ContosoUniversity.DAL.Repositories
             SchoolDbContext = schoolContext ?? throw new ArgumentNullException(nameof(schoolContext));
         }
 
-        public async Task<int> AddNewCourseAsync(CourseEditDto course)
+        public async Task<CourseActionResult> AddNewCourseAsync(CourseEditDto course)
         {
+            Guard.Against.Null(course, nameof(course));
+
+            CourseActionResult result = new CourseActionResult
+            {
+                Action = "AddNewCourseAsync",
+                CourseID = course.CourseID
+            };
+
             Course persistentCourse = new Course
             {
                 CourseID = course.CourseID,
@@ -33,8 +41,9 @@ namespace ContosoUniversity.DAL.Repositories
                 Title = course.Title
             };
             SchoolDbContext.Courses.Add(persistentCourse);
-            await SaveChangesAsync();
-            return persistentCourse.CourseID;
+            result.ChangeCount = await SaveChangesAsync();
+            result.CourseIDNew = persistentCourse.CourseID;
+            return result;
         }
 
         public async Task<CourseEditDto> GetCourseEditDtoNoTrackingAsync(int courseID)

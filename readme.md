@@ -49,3 +49,4 @@ ContosoUniversity.Common     | Interface definitions
 ContosoUniversity.DAL        | Data Access Layer
 ContosoUniversity            | Contoso University Web Application
 Demo.Components              | Demo Blazor components
+ContosoUniversity.Components | Blazor components for ContosoUniversity

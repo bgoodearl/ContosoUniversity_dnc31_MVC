@@ -11,6 +11,10 @@
             Added Course Delete, updated content for Home page<br/>
             Added logging with NLog<br/>
             Added Blazor demo components<br/>
+            Added Blazor components for Contosu University Courses<br/>
+            Enhanced SchoolViewDataRepository for CU Blazor components<br/>
+            Modified Courses MVC page to show either MVC server side content
+            or (new default) Blazor Courses component<br/>
 		</td>
     </tr>
     <tr>

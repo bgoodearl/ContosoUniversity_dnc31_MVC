@@ -1,0 +1,60 @@
+﻿@using static ContosoUniversity.Shared.CommonDefs
+
+@if (UIMode == UIMode.List)
+{
+    <h1 class="h2">Courses - Blazor</h1>
+    <div>
+        <button @onclick="() => OnCreateCourse()" class="btn" style="background-color:lightgray;">Create Course</button>
+    </div>
+}
+else if (UIMode == UIMode.Details)
+{
+    <h1 class="h2">Course - Details</h1>
+}
+else if (UIMode == UIMode.Edit)
+{
+    <h1 class="h2">Course - Edit</h1>
+}
+else if (UIMode == UIMode.Create)
+{
+    <h1 class="h2">Course - New</h1>
+}
+else if (UIMode == UIMode.Delete)
+{
+    <h1 class="h2">Course - Confirm Delete</h1>
+}
+else
+{
+    <h1 class="h2">Courses? - Blazor</h1>
+}
+@if (!string.IsNullOrWhiteSpace(Message))
+{
+    <p>@Message</p>
+}
+@if (UIMode == UIMode.List)
+{
+    <CourseList CoursesVM=@CoursesVM CourseAction="ca => CourseAction(ca)" />
+}
+else if (UIMode == UIMode.Details)
+{
+    <CourseDetails Course=@SelectedCourseDetails />
+    <button @onclick="() => OnReturnToList()" class="btn" style="background-color:lightgray;">Return to List</button>
+}
+else if (UIMode == UIMode.Edit)
+{
+    <CourseEdit Course2Edit=@Course2Edit CourseAction="ca => CourseAction(ca)" />
+}
+else if (UIMode == UIMode.Create)
+{
+    <CourseEdit NewCourse=true CourseAction="ca => CourseAction(ca)" />
+}
+else if (UIMode == UIMode.Delete)
+{
+    <CourseDetails Course=@SelectedCourseDetails />
+    <button @onclick="() => OnConfirmDelete()" class="btn" style="background-color:lightgray;">Delete</button>
+    <button @onclick="() => OnReturnToList()" class="btn" style="background-color:lightgray;">Return to List</button>
+}
+else
+{
+    <h1 class="h2">Courses? - Blazor</h1>
+}

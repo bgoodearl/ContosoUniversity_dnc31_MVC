@@ -7,13 +7,13 @@ using ContosoUniversity.Common.Interfaces;
 using ContosoUniversity.DAL.Interfaces;
 using ContosoUniversity.Models;
 using ContosoUniversity.Shared.Interfaces;
-using ContosoUniversity.Shared.ViewModels.Courses;
 using ContosoUniversity.Shared.ViewModels.Departments;
 using ContosoUniversity.ViewModels.Courses;
 using ContosoUniversity.ViewModels.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using CUSVMC = ContosoUniversity.Shared.ViewModels.Courses;
 
 namespace ContosoUniversity.Controllers
 {
@@ -30,13 +30,19 @@ namespace ContosoUniversity.Controllers
         #region read-only variables
         protected ILogger<CoursesController> Logger { get; }
         #endregion read-only variables
-        [Route("~/[Controller]")]
-        public async Task<IActionResult> Index()
+        [Route("~/[Controller]/{mode?}/{id?}")]
+        public async Task<IActionResult> Index(int? mode, int? id)
         {
             using (ISchoolRepository repo = GetSchoolRepository())
             {
-                List<CourseListItem> courses = await repo.GetCourseListItemsNoTrackingAsync();
-                return View(courses);
+                CUSVMC.CoursesViewModel model = new CUSVMC.CoursesViewModel
+                {
+                    CourseID = id,
+                    ViewMode = mode.HasValue ? mode.Value : 0
+                };
+
+                model.CourseList = await repo.GetCourseListItemsNoTrackingAsync();
+                return View(model);
             }
         }
 
@@ -46,7 +52,7 @@ namespace ContosoUniversity.Controllers
         public async Task<IActionResult> Details(int id)
         {
             ISchoolViewDataRepository svRepo = GetSchoolViewDataRepository();
-            CourseItem courseItem = await svRepo.GetCourseDetailsNoTrackingAsync(id);
+            CUSVMC.CourseItem courseItem = await svRepo.GetCourseDetailsNoTrackingAsync(id);
             if (courseItem == null)
             {
                 return NotFound();
@@ -59,7 +65,7 @@ namespace ContosoUniversity.Controllers
         {
             CourseEditViewModel model = new CourseEditViewModel
             {
-                Course = new CourseEditDto(),
+                Course = new CUSVMC.CourseEditDto(),
                 NewCourse = true
             };
             using (ISchoolRepository repo = GetSchoolRepository())
@@ -75,7 +81,7 @@ namespace ContosoUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CourseID,Credits,DepartmentID,Title")] CourseEditDto course)
+        public async Task<IActionResult> Create([Bind("CourseID,Credits,DepartmentID,Title")] CUSVMC.CourseEditDto course)
         {
             using (ISchoolRepository repo = GetSchoolRepository())
             {
@@ -90,11 +96,16 @@ namespace ContosoUniversity.Controllers
                         }
                         else
                         {
-#if DEBUG
-                            int courseID =
-#endif
-                            await repo.AddNewCourseAsync(course);
-                            return RedirectToAction(nameof(Index));
+                            CUSVMC.CourseActionResult actionResult = await repo.AddNewCourseAsync(course);
+                            if (!string.IsNullOrWhiteSpace(actionResult.ErrorMessage))
+                            {
+                                Logger.LogError(null, "Courses-Create - {0}", actionResult.ErrorMessage);
+                                ModelState.AddModelError("", "Unable to save changes[1]. Try again, and if the problem persists, see your system administrator.");
+                            }
+                            else
+                            {
+                                return RedirectToAction(nameof(Index));
+                            }
                         }
                     }
                 }
@@ -155,7 +166,7 @@ namespace ContosoUniversity.Controllers
         [HttpPost]
         [Route("{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CourseID,Credits,DepartmentID,Title")] CourseEditDto course)
+        public async Task<IActionResult> Edit(int id, [Bind("CourseID,Credits,DepartmentID,Title")] CUSVMC.CourseEditDto course)
         {
             if ((id == 0) || (course == null) || (course.CourseID != id))
             {
@@ -175,7 +186,7 @@ namespace ContosoUniversity.Controllers
                         }
                         else
                         {
-                            CourseActionResult actionResult = await repo.SaveCourseChangesAsync(course);
+                            CUSVMC.CourseActionResult actionResult = await repo.SaveCourseChangesAsync(course);
                             if (!string.IsNullOrWhiteSpace(actionResult.ErrorMessage))
                             {
                                 Logger.LogError(null, "Courses-Edit - {0}", actionResult.ErrorMessage);
@@ -224,7 +235,7 @@ namespace ContosoUniversity.Controllers
         {
             using (ISchoolRepository repo = GetSchoolRepository())
             {
-                CourseItem course = new CourseItem(await repo.GetCourseListItemNoTrackingAsync(id));
+                CUSVMC.CourseItem course = new CUSVMC.CourseItem(await repo.GetCourseListItemNoTrackingAsync(id));
                 if (course == null)
                 {
                     return NotFound();
@@ -239,7 +250,7 @@ namespace ContosoUniversity.Controllers
         [HttpPost]
         [Route("{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id, [Bind("CourseID,Title")] CourseItem course)
+        public async Task<IActionResult> Delete(int id, [Bind("CourseID,Title")] CUSVMC.CourseItem course)
         {
             if ((id == 0) || (course == null) || (course.CourseID != id))
             {
@@ -250,7 +261,7 @@ namespace ContosoUniversity.Controllers
             if (ModelState.IsValid)
             {
                 ISchoolViewDataRepository svRepo = GetSchoolViewDataRepository();
-                CourseActionResult actionResult = await svRepo.DeleteCourseAsync(course.CourseID);
+                CUSVMC.CourseActionResult actionResult = await svRepo.DeleteCourseAsync(course.CourseID);
                 if (!string.IsNullOrWhiteSpace(actionResult.ErrorMessage))
                 {
                     Logger.LogError(null, "Courses-Delete - {0}", actionResult.ErrorMessage);
@@ -266,7 +277,7 @@ namespace ContosoUniversity.Controllers
             using (ISchoolRepository repo = GetSchoolRepository())
             {
                 int courseID = course.CourseID;
-                course = new CourseItem(await repo.GetCourseListItemNoTrackingAsync(courseID));
+                course = new CUSVMC.CourseItem(await repo.GetCourseListItemNoTrackingAsync(courseID));
                 if (course == null)
                 {
                     return NotFound();

@@ -1,12 +1,24 @@
-﻿@using ContosoUniversity.Shared.ViewModels.Courses
-@model List<CourseListItem>
+﻿@using ContosoUniversity.Components
+@using ContosoUniversity.Shared.ViewModels.Courses
+@model CoursesViewModel
 @{
+    @if (Model.ViewMode >= 0)
+    {
+        Layout = "~/Views/Shared/_LayoutBlazor.cshtml";
+    }
     ViewData["Title"] = "Courses";
 }
-<h1 class="h2">Courses - MVC</h1>
+@if (Model.ViewMode < 0)
+{
+    <h1 class="h2">Courses - MVC</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
 
-@await Html.PartialAsync("Partial/CourseListPartial", Model)
+    @await Html.PartialAsync("Partial/CourseListPartial", Model.CourseList)
+}
+else
+{
+    <component type="typeof(Courses)" render-mode="ServerPrerendered" param-CoursesVM="Model" />
+}

@@ -1,0 +1,42 @@
+﻿<EditForm Model="@Course2Edit" OnValidSubmit="@HandleValidSubmitAsync">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    @if (!string.IsNullOrWhiteSpace(Message))
+    {
+        <p>@Message</p>
+    }
+
+    <table>
+        <tr>
+            <th>Course ID:</th>
+            <td><InputNumber id="courseID" @bind-Value="Course2Edit.CourseID" /></td>
+        </tr>
+        <tr>
+            <th>Title:</th>
+            <td><InputText id="title" @bind-Value="Course2Edit.Title" /></td>
+        </tr>
+        <tr>
+            <th>Credits:</th>
+            <td><InputNumber id="credits" @bind-Value="Course2Edit.Credits" /></td>
+        </tr>
+        <tr>
+            <th>Department:</th>
+            <td>
+                @if (DepartmentList != null)
+                {
+                <InputSelect @bind-Value="@Course2Edit.DepartmentIDstr">
+                    <option value="0">-- Select Department --</option>
+                    @foreach (var dept in DepartmentList)
+                    {
+                        <option value="@dept.Id">@dept.Name</option>
+                    }
+                </InputSelect>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><button class="btn" style="background-color:lightgray;" type="submit">Save</button> <button @onclick="() => OnReturnToList()" class="btn" style="background-color:lightgray;">Cancel</button></td>
+        </tr>
+    </table>
+</EditForm>

@@ -1,0 +1,43 @@
+﻿@using ContosoUniversity.Shared.ViewModels
+@if (Course != null)
+{
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            CourseID
+        </dt>
+        <dd class="col-sm-10">
+            @Course.CourseID
+        </dd>
+        <dt class="col-sm-2">
+            Title
+        </dt>
+        <dd class="col-sm-10">
+            @Course.Title
+        </dd>
+        <dt class="col-sm-2">
+            Credits
+        </dt>
+        <dd class="col-sm-10">
+            @Course.Credits
+        </dd>
+        <dt class="col-sm-2">
+            Department
+        </dt>
+        <dd class="col-sm-10">
+            @Course.Department
+        </dd>
+        <dt class="col-sm-2">
+            Instructor(s)
+        </dt>
+        <dd>
+            @foreach(IdItem i in Course.Instructors)
+            {
+                @i.Name<br/>
+            }
+        </dd>
+    </dl>
+</div>
+}
+
