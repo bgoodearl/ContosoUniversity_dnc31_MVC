@@ -1,6 +1,6 @@
 # Contoso University
 
-ASP.NET Core MVC with Entity Framework 6 - demo app with Blazor Server added
+ASP.NET Core 3.1 MVC with Entity Framework 6 - demo app with Blazor Server added
 
 Adapted from Microsoft sample code - see [CU_Resources](./_docs/CU_Resources.md)
 
