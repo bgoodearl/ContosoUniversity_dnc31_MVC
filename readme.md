@@ -10,6 +10,7 @@ This app was intentionally built with a layered architecture.
 
 [Dev Notes](./_docs/CU__DevNotes.md)
 
+[Blazor Resources](./_docs/CU_BlazorResources.md)<br/>
 [EF Resources](./_docs/CU_EFResources.md)<br/>
 [Other Resources](./_docs/CU_Resources.md)<br/>
 [Tools](./_docs/CU_Tools.md)<br/>
@@ -35,6 +36,9 @@ in `appsettings.Development_user_...` after you copy and rename it.
 Demonstrate how to take an ASP.NET Core 3.1 web app using Entity Framework 6 and a layered architecture
 and replace server-side MVC with Blazor Server components.
 
+This is a demonstration of how to add Blazor Server components to multiple
+ASP.NET MVC pages.
+
 ## Projects
 
 Project Name                 | Description
@@ -44,3 +48,4 @@ ContosoUniversity.Shared     | Shared definitions and View Models
 ContosoUniversity.Common     | Interface definitions
 ContosoUniversity.DAL        | Data Access Layer
 ContosoUniversity            | Contoso University Web Application
+Demo.Components              | Demo Blazor components

@@ -10,6 +10,7 @@
 		<td>
             Added Course Delete, updated content for Home page<br/>
             Added logging with NLog<br/>
+            Added Blazor demo components<br/>
 		</td>
     </tr>
     <tr>
