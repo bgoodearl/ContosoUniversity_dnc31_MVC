@@ -9,6 +9,7 @@
         <td>2/26/2022</td><td>bg</td>
 		<td>
             Added Course Delete, updated content for Home page<br/>
+            Added logging with NLog<br/>
 		</td>
     </tr>
     <tr>

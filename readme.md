@@ -27,6 +27,9 @@ username of the account from which you are running Visual Studio, and
 update the paths in the file to match your solution path.  Also,
 and correct connection string for your environment.
 
+Update paths for `internalLogFile` and `var_logdir`
+in `appsettings.Development_user_...` after you copy and rename it.
+
 ## Goals of this repo
 
 Demonstrate how to take an ASP.NET Core 3.1 web app using Entity Framework 6 and a layered architecture

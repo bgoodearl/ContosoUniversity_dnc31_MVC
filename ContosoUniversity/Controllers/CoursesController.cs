@@ -13,17 +13,23 @@ using ContosoUniversity.ViewModels.Courses;
 using ContosoUniversity.ViewModels.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ContosoUniversity.Controllers
 {
     [Route("[Controller]/[Action]")]
     public class CoursesController : CUControllerBase
     {
-        public CoursesController(IHttpContextAccessor httpContextAccessor)
+        public CoursesController(IHttpContextAccessor httpContextAccessor,
+            ILogger<CoursesController> logger)
             : base(httpContextAccessor)
         {
+            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        #region read-only variables
+        protected ILogger<CoursesController> Logger { get; }
+        #endregion read-only variables
         [Route("~/[Controller]")]
         public async Task<IActionResult> Index()
         {
@@ -99,18 +105,22 @@ namespace ContosoUniversity.Controllers
                     if (ex.InnerException != null)
                     {
                         ex2Log = ex.InnerException;
+                        if ((ex2Log.InnerException != null) && (ex2Log is System.Data.Entity.Core.UpdateException))
+                        {
+                            ex2Log = ex2Log.InnerException;
+                        }
                     }
-                    //TODO: Logger.LogError(ex, "Courses-Create[1] {0}: {1}", ex2Log.GetType().Name, ex2Log.Message);
+                    Logger.LogError(ex, "Courses-Create[1] {0}: {1}", ex2Log.GetType().Name, ex2Log.Message);
                     ModelState.AddModelError("", "Unable to save changes[1]. Try again, and if the problem persists, see your system administrator.");
                 }
                 catch (RetryLimitExceededException ex)
                 {
-                    //TODO: Logger.LogError(ex, "Courses-Create[2] {0}: {1}", ex.GetType().Name, ex.Message);
+                    Logger.LogError(ex, "Courses-Create[2] {0}: {1}", ex.GetType().Name, ex.Message);
                     ModelState.AddModelError("", "Unable to save changes[2]. Try again, and if the problem persists, see your system administrator.");
                 }
                 catch (Exception ex)
                 {
-                    //TODO: Logger.LogError(ex, "Courses-Create[3] {0}: {1}", ex.GetType().Name, ex.Message);
+                    Logger.LogError(ex, "Courses-Create[3] {0}: {1}", ex.GetType().Name, ex.Message);
                     ModelState.AddModelError("", "Unable to save changes[3]. Try again, and if the problem persists, see your system administrator.");
                 }
                 CourseEditViewModel model = new CourseEditViewModel
@@ -149,7 +159,7 @@ namespace ContosoUniversity.Controllers
         {
             if ((id == 0) || (course == null) || (course.CourseID != id))
             {
-                //TODO: Log this
+                Logger.LogError(null, $"id={id}, course.CourseID={(course != null ? course.CourseID : (int?)null)}");
                 return BadRequest();
             }
 
@@ -168,7 +178,7 @@ namespace ContosoUniversity.Controllers
                             CourseActionResult actionResult = await repo.SaveCourseChangesAsync(course);
                             if (!string.IsNullOrWhiteSpace(actionResult.ErrorMessage))
                             {
-                                //TODO: Log This
+                                Logger.LogError(null, "Courses-Edit - {0}", actionResult.ErrorMessage);
                                 ModelState.AddModelError("", "Unable to save changes[1]. Try again, and if the problem persists, see your system administrator.");
                             }
                             else
@@ -186,17 +196,17 @@ namespace ContosoUniversity.Controllers
                     {
                         ex2Log = ex.InnerException;
                     }
-                    //TODO: Logger.LogError(ex, "Courses-Edit[1] {0}: {1}", ex2Log.GetType().Name, ex2Log.Message);
+                    Logger.LogError(ex, "Courses-Edit[1] {0}: {1}", ex2Log.GetType().Name, ex2Log.Message);
                     ModelState.AddModelError("", "Unable to save changes[1]. Try again, and if the problem persists, see your system administrator.");
                 }
                 catch (RetryLimitExceededException ex)
                 {
-                    //TODO: Logger.LogError(ex, "Courses-Edit[2] {0}: {1}", ex.GetType().Name, ex.Message);
+                    Logger.LogError(ex, "Courses-Edit[2] {0}: {1}", ex.GetType().Name, ex.Message);
                     ModelState.AddModelError("", "Unable to save changes[2]. Try again, and if the problem persists, see your system administrator.");
                 }
                 catch (Exception ex)
                 {
-                    //TODO: Logger.LogError(ex, "Courses-Edit[3] {0}: {1}", ex.GetType().Name, ex.Message);
+                    Logger.LogError(ex, "Courses-Edit[3] {0}: {1}", ex.GetType().Name, ex.Message);
                     ModelState.AddModelError("", "Unable to save changes[3]. Try again, and if the problem persists, see your system administrator.");
                 }
                 CourseEditViewModel model = new CourseEditViewModel
@@ -233,7 +243,7 @@ namespace ContosoUniversity.Controllers
         {
             if ((id == 0) || (course == null) || (course.CourseID != id))
             {
-                //TODO: Log this
+                Logger.LogError(null, $"id={id}, course.CourseID={(course != null ? course.CourseID : (int?)null)}");
                 return BadRequest();
             }
 
@@ -243,12 +253,12 @@ namespace ContosoUniversity.Controllers
                 CourseActionResult actionResult = await svRepo.DeleteCourseAsync(course.CourseID);
                 if (!string.IsNullOrWhiteSpace(actionResult.ErrorMessage))
                 {
-                    //TODO: Log the error
+                    Logger.LogError(null, "Courses-Delete - {0}", actionResult.ErrorMessage);
                     ModelState.AddModelError("", "Unable to delete course. Try again, and if the problem persists, see your system administrator.");
                 }
                 else
                 {
-                    //TODO: Log this
+                    Logger.LogInformation($"Courses-Delete CourseID = {course.CourseID}");
                     return RedirectToAction("Index");
                 }
             }
@@ -294,7 +304,7 @@ namespace ContosoUniversity.Controllers
             }
             catch (Exception ex)
             {
-                //TODO: Logger.LogError(ex, "Courses-SeedData {0}: {1}", ex.GetType().Name, ex.Message);
+                Logger.LogError(ex, "Courses-SeedData {0}: {1}", ex.GetType().Name, ex.Message);
                 ErrorViewModel model = new ErrorViewModel
                 {
                 };
