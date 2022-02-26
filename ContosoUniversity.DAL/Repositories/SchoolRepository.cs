@@ -174,6 +174,11 @@ namespace ContosoUniversity.DAL.Repositories
             return students;
         }
 
+        public Course RemoveCourse(Course course)
+        {
+            return SchoolDbContext.Courses.Remove(course);
+        }
+
         public async Task<CourseActionResult> SaveCourseChangesAsync(CourseEditDto course)
         {
             Guard.Against.Null(course, nameof(course));

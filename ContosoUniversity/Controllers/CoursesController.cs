@@ -208,6 +208,66 @@ namespace ContosoUniversity.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            using (ISchoolRepository repo = GetSchoolRepository())
+            {
+                CourseItem course = new CourseItem(await repo.GetCourseListItemNoTrackingAsync(id));
+                if (course == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return View(course);
+                }
+            }
+        }
+
+        [HttpPost]
+        [Route("{id}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id, [Bind("CourseID,Title")] CourseItem course)
+        {
+            if ((id == 0) || (course == null) || (course.CourseID != id))
+            {
+                //TODO: Log this
+                return BadRequest();
+            }
+
+            if (ModelState.IsValid)
+            {
+                ISchoolViewDataRepository svRepo = GetSchoolViewDataRepository();
+                CourseActionResult actionResult = await svRepo.DeleteCourseAsync(course.CourseID);
+                if (!string.IsNullOrWhiteSpace(actionResult.ErrorMessage))
+                {
+                    //TODO: Log the error
+                    ModelState.AddModelError("", "Unable to delete course. Try again, and if the problem persists, see your system administrator.");
+                }
+                else
+                {
+                    //TODO: Log this
+                    return RedirectToAction("Index");
+                }
+            }
+
+            using (ISchoolRepository repo = GetSchoolRepository())
+            {
+                int courseID = course.CourseID;
+                course = new CourseItem(await repo.GetCourseListItemNoTrackingAsync(courseID));
+                if (course == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return View(course);
+                }
+            }
+        }
+
         private async Task PopulateDepartmentsDropDownList(ISchoolRepository repo, CourseSharedViewModel model)
         {
             List<DepartmentListItem> idItems = await repo.GetDepartmentListItemsNoTrackingAsync();

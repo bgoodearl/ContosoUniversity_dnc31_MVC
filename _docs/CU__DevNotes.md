@@ -6,6 +6,12 @@
 		<th>Notes</th>
     </tr>
     <tr>
+        <td>2/26/2022</td><td>bg</td>
+		<td>
+            Added Course Delete, updated content for Home page<br/>
+		</td>
+    </tr>
+    <tr>
         <td>2/25/2022</td><td>bg</td>
 		<td>
             Added SchoolViewDataRepository, Course Details<br/>
