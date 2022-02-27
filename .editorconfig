@@ -1,4 +1,5 @@
 # To learn more about .editorconfig see https://aka.ms/editorconfigdocs
+root = true
 
 # All files
 [*]
@@ -9,6 +10,11 @@ indent_size = 4
 [*.csproj]
 indent_size = 2
 
-# Xml files
-[*.xml]
+# Xml and json files
+[*.{xml,json}]
 indent_size = 2
+
+############################### 
+# .NET Coding Conventions     # 
+############################### 
+[*.{cs,vb}] 
