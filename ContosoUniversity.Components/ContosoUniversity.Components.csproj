@@ -15,9 +15,6 @@
     <Reference Include="ContosoUniversity.Common">
       <HintPath>..\_Binaries\ContosoUniversity.Common.dll</HintPath>
     </Reference>
-    <Reference Include="ContosoUniversity.Models">
-      <HintPath>..\_Binaries\ContosoUniversity.Models.dll</HintPath>
-    </Reference>
     <Reference Include="ContosoUniversity.Shared">
       <HintPath>..\_Binaries\ContosoUniversity.Shared.dll</HintPath>
     </Reference>
